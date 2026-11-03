@@ -29,7 +29,7 @@ html{scrollbar-gutter:stable}
 .rc-status .dot{display:inline-block;vertical-align:1px;width:8px;height:8px;border-radius:50%;background:#8fa0bd;margin-right:8px}
 .rc-status.live .dot{background:#3fbf6f;box-shadow:0 0 0 3px rgba(63,191,111,.25)}
 .rc-status .sep{opacity:.5;margin:0 8px}
-.rc-status{position:relative;transition:background-color .4s}
+.rc-status{position:relative;transition:background-color .4s}@media (max-width:389px){.rc-status{font-size:12px;padding-left:10px;padding-right:10px}}
 .rc-status .cd{font-variant-numeric:tabular-nums;opacity:.85}
 .rc-prog{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(255,255,255,.08)}
 .rc-prog i{display:block;height:100%;background:#3fbf6f;transition:width 1s linear}
@@ -100,7 +100,7 @@ function draw(){var now=Date.now();var ELN0=Date.UTC(2026,10,3,23),ELN1=Date.UTC
  var txt=[];
  if(last)txt.push((sm?'Updated ':'Results updated ')+'<b>'+(now-last<20*3600e3?fmt(last):fmtD(last))+(sm?'':' MT')+'</b>');
  var pct=0;
- if(now<ELN0){txt.push(sm?'Live results at <b>4 PM MT</b> Tue':'Live results start when the first polls close at <b>4:00 PM MT</b> Tuesday')}
+ if(now<ELN0){txt.push(sm?'Results at <b>4 PM MT / 6 PM ET</b>':'Live results start when the first polls close at <b>4:00 PM MT / 6:00 PM ET</b> Tuesday')}
  else if(nxt){var s=Math.max(0,Math.round((nxt-now)/1000)),m=Math.floor(s/60),ss=s%60;var cd=m+':'+(ss<10?'0':'')+ss;txt.push((sm?'Next ':'Next update about ')+'<b>'+fmt(nxt)+(sm?'':' MT')+'</b>'+(s<3600?' <span class="cd">'+(sm?cd:'in '+cd)+'</span>':''));if(prv)pct=Math.max(0,Math.min(100,(now-prv)/(nxt-prv)*100))}
  else txt.push('Final results posted');
  el.className="rc-status"+(liveN?" live":"");el.innerHTML=parts.join('')+txt.join('<span class="sep">·</span>')+(pct?'<div class="rc-prog"><i style="width:'+pct.toFixed(2)+'%"></i></div>':'');el.hidden=false}
