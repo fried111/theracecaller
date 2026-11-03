@@ -1795,7 +1795,7 @@ async function loadSnapFile(){try{const r=await fetch("snap.json?t="+Date.now(),
 function setSnapText(){const el=document.getElementById("snapBar");if(!el)return;const at=DATA&&DATA.snap&&DATA.snap.at;
   const night=Date.now()>=Date.UTC(2026,10,3,23);
   el.innerHTML=`<div class="wrap"><b>${night?"Results as of":"Snapshot from"}</b>${at?` ${new Date(at).toLocaleString("en-US",{weekday:"short",month:"short",day:"numeric",hour:"numeric",minute:"2-digit",timeZone:"America/Phoenix"})} MT`:""}. ${night?"Results refresh through the night.":"Jon's picks and the latest data are shown as of then."} <b>This page updates on its own. No sign-in needed.</b></div>`;el.hidden=false}
-function showSnapBar(){if(SNAP_MODE)return;SNAP_MODE=true;setSnapText();loadSnapFile();setInterval(loadSnapFile,4*60000);setInterval(setSnapText,60000);return;const el=document.getElementById("snapBar");if(!el)return;const at=DATA&&DATA.snap&&DATA.snap.at;
+function showSnapBar(){if(SNAP_MODE)return;SNAP_MODE=true;setSnapText();loadSnapFile();setInterval(loadSnapFile,60000);setInterval(setSnapText,60000);return;const el=document.getElementById("snapBar");if(!el)return;const at=DATA&&DATA.snap&&DATA.snap.at;
   el.innerHTML=`<div class="wrap"><b>You're viewing a snapshot</b>${at?` from ${new Date(at).toLocaleString("en-US",{weekday:"short",month:"short",day:"numeric",hour:"numeric",minute:"2-digit",timeZone:"America/Phoenix"})} MT`:""}. Jon's picks and the latest data are shown as of then. <b>Sign in to Claude (free) and reopen this link to see live updates.</b></div>`;el.hidden=false}
 (async()=>{if(!window.claude||!window.claude.use){showSnapBar();return}
   try{USER=await window.claude.use("user");IS_OWNER=USER?await USER.isOwner():false}catch(e){}
