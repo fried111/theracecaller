@@ -2,6 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url><loc>https://theracecaller.com/</loc><changefreq>weekly</changefreq></url>
 <url><loc>https://theracecaller.com/desk/</loc><changefreq>hourly</changefreq></url>
+<url><loc>https://theracecaller.com/how-it-works/</loc><changefreq>weekly</changefreq></url>
 <url><loc>https://theracecaller.com/about/</loc><changefreq>weekly</changefreq></url>
 <url><loc>https://theracecaller.com/leadership/</loc><changefreq>weekly</changefreq></url>
 </urlset>

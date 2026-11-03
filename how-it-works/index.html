@@ -1,0 +1,146 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>How It Works · The Race Caller</title><meta name="description" content="How The Race Caller works: picks locked before polls close, live calls timestamped against the AP, and the sources behind every number."><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><meta property="og:type" content="website"><meta property="og:site_name" content="The Race Caller"><meta property="og:title" content="How It Works · The Race Caller"><meta property="og:description" content="How The Race Caller works: picks locked before polls close, live calls timestamped against the AP, and the sources behind every number."><meta property="og:url" content="https://theracecaller.com/how-it-works/"><meta property="og:image" content="https://theracecaller.com/assets/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://theracecaller.com/assets/og.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap"><style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:#151b26;background:#f3f5f8;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.disp{font-family:Inter,system-ui,sans-serif;font-optical-sizing:auto}
+.rc-nav{background:#fff;display:flex;align-items:center;justify-content:space-between;padding:18px clamp(16px,4vw,56px);gap:16px;position:relative}
+.rc-logo{display:flex;align-items:center;gap:10px;font-weight:900;font-size:clamp(18px,2.2vw,24px);letter-spacing:-.02em;text-transform:uppercase;color:#151b26;white-space:nowrap;text-decoration:none}
+.rc-sq{display:flex;gap:4px}.rc-sq i{width:12px;height:12px;border-radius:3px}
+.rc-links{display:flex;gap:28px;font-weight:600;font-size:15px}
+.rc-links a{color:#5d6879;text-decoration:none;padding-bottom:4px;border-bottom:2px solid transparent}
+.rc-links a:hover{color:#151b26}
+.rc-links a.on{color:#151b26;border-bottom-color:#151b26}
+.btn,.rc-btn{display:inline-block;background:#151b26;color:#fff;border-radius:999px;padding:10px 18px;font-weight:700;font-size:14px;white-space:nowrap;text-decoration:none;border:1.5px solid #151b26}
+.btn.l{background:#fff;color:#151b26}
+.rc-burger{display:none;width:44px;height:44px;border:0;background:none;padding:9px;margin:-9px;cursor:pointer}
+.rc-burger i{display:block;height:2.5px;background:#151b26;margin:5px 0;border-radius:2px}
+.rc-mmenu{display:none}
+.rc-links a,.rc-links a:visited,.rc-mmenu a,.rc-mmenu a:visited{color:#5d6879!important;-webkit-tap-highlight-color:transparent}.rc-links a:hover,.rc-links a.on{color:#151b26!important}.rc-mmenu a:visited,.rc-mmenu a{color:#33405a!important}
+.rc-top{position:sticky;top:0;z-index:60}
+.rc-status{background:#151b26;color:#dfe5ef;font:500 13px/1.5 Inter,system-ui,sans-serif;padding:7px clamp(16px,4vw,56px);display:block;text-align:center}
+.rc-status[hidden]{display:none}
+.rc-status b{color:#fff;font-weight:700}
+.rc-status .dot{display:inline-block;vertical-align:1px;width:8px;height:8px;border-radius:50%;background:#8fa0bd;margin-right:8px}
+.rc-status.live .dot{background:#3fbf6f;box-shadow:0 0 0 3px rgba(63,191,111,.25)}
+.rc-status .sep{opacity:.5;margin:0 8px}
+.rc-status{position:relative;transition:background-color .4s}
+.rc-status .cd{font-variant-numeric:tabular-nums;opacity:.85}
+.rc-prog{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(255,255,255,.08)}
+.rc-prog i{display:block;height:100%;background:#3fbf6f;transition:width 1s linear}
+.live-pill{display:inline-flex;align-items:center;gap:0;vertical-align:1px;background:rgba(63,191,111,.16);color:#7fe0a3;font-weight:800;font-size:11px;letter-spacing:.12em;padding:3px 8px 3px 7px;border-radius:999px;margin-right:10px}
+.rc-status.live .live-pill .dot{animation:rcpulse 1.6s ease-out infinite}
+@keyframes rcpulse{0%{box-shadow:0 0 0 0 rgba(63,191,111,.6)}100%{box-shadow:0 0 0 8px rgba(63,191,111,0)}}
+.rc-status.flash{background:#1d7a45}
+.rc-status.flash .dot{background:#fff}
+@media (prefers-reduced-motion:reduce){.rc-status.live .live-pill .dot{animation:none}}
+.rc-stripe{height:8px;background:linear-gradient(90deg,#2c5fd6 0 20%,#7f9fe6 20% 40%,#b8860b 40% 60%,#e88a84 60% 80%,#d23b33 80%)}
+.k{font-weight:700;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:#5d6879}
+.rc-foot{background:#fff;padding:22px clamp(16px,4vw,56px);font-size:13px;color:#5d6879;display:flex;justify-content:space-between;gap:8px 24px;flex-wrap:wrap;border-top:1px solid #e6e9ef}
+.rc-foot a{color:#2c5fd6;text-decoration:none;font-weight:600}.rc-foot a:hover{text-decoration:underline}.rc-contact b{color:#151b26}
+@media(max-width:900px){
+ .rc-links{display:none}.rc-burger{display:block}
+ .rc-mmenu{position:absolute;left:0;right:0;top:100%;background:#fff;border-top:1px solid #dde2ea;box-shadow:0 14px 30px rgba(21,27,38,.15);z-index:50;padding:8px clamp(16px,4vw,56px) 16px}
+ .rc-nav.open .rc-mmenu{display:block}
+ .rc-mmenu a{display:block;padding:13px 2px;font-weight:700;font-size:17px;text-decoration:none;border-bottom:1px solid #eef1f5;color:#33405a}
+ .rc-mmenu a.on{color:#151b26!important;box-shadow:inset 3px 0 0 #151b26;padding-left:14px}
+ .rc-mmenu a:last-child{border-bottom:0}
+}
+@media(max-width:520px){.rc-nav .rc-btn{display:none}}
+
+.how{background:#f3f5f8;padding:clamp(48px,7vw,80px) clamp(16px,5vw,64px) clamp(56px,7vw,90px)}
+.how>*{max-width:1080px;margin-left:auto;margin-right:auto}
+.how h1{font-weight:900;letter-spacing:-.035em;text-transform:uppercase;font-size:clamp(38px,5.6vw,66px);line-height:.95;margin:8px auto 18px;color:#151b26}
+.how .lede{font-size:clamp(18px,1.8vw,21px);line-height:1.55;color:#33405a;margin:0 auto 40px}
+.how .lede-w{max-width:1080px}
+.how h2{font-weight:900;letter-spacing:-.02em;font-size:clamp(24px,2.6vw,30px);margin:0 0 6px;color:#151b26}
+.how .sub{color:#5d6879;font-size:16px;margin:0 0 18px}
+.how section{margin-top:44px}
+.cmp{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border:1px solid #dde2ea;border-radius:14px;overflow:hidden;font-size:15.5px;line-height:1.5}
+.cmp th{text-align:left;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#5d6879;background:#f8f9fb;padding:14px 18px;border-bottom:1px solid #dde2ea}
+.cmp th.rc{color:#151b26}
+.cmp td{padding:15px 18px;vertical-align:top;border-bottom:1px solid #eef1f5;color:#33405a}
+.cmp tr:last-child td{border-bottom:0}
+.cmp td:first-child{font-weight:700;color:#151b26;width:19%}
+.cmp td.rc{background:#fbfcfe;color:#151b26}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{background:#fff;border:1px solid #dde2ea;border-radius:14px;padding:22px 24px}
+.card .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#151b26;color:#fff;font-weight:800;font-size:14px;margin-bottom:10px}
+.card h3{font-weight:800;letter-spacing:-.01em;font-size:19px;margin:0 0 8px;color:#151b26}
+.card p{margin:0 0 10px;color:#33405a;font-size:15.5px;line-height:1.6}
+.card p:last-child{margin-bottom:0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.src{display:grid;grid-template-columns:repeat(2,1fr);gap:0;background:#fff;border:1px solid #dde2ea;border-radius:14px;overflow:hidden}
+.src div{padding:16px 20px;border-bottom:1px solid #eef1f5;font-size:15px;line-height:1.55;color:#33405a}
+.src div:nth-child(odd){border-right:1px solid #eef1f5}
+.src b{display:block;color:#151b26;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
+.note{background:#151b26;color:#dfe5ef;border-radius:14px;padding:24px 26px;font-size:15.5px;line-height:1.6}
+.note b{color:#fff}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+@media(max-width:900px){.steps{grid-template-columns:1fr}.two{grid-template-columns:1fr}.src{grid-template-columns:1fr}.src div:nth-child(odd){border-right:0}}
+@media(max-width:640px){.cmp,.cmp tbody,.cmp tr,.cmp td{display:block;width:100%!important}.cmp thead{display:none}.cmp tr{border-bottom:1px solid #dde2ea}.cmp td{border:0;padding:10px 16px}.cmp td:first-child{padding-top:16px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#5d6879}.cmp td:nth-child(2)::before{content:"The networks: ";font-weight:700;color:#5d6879}.cmp td.rc::before{content:"The Race Caller: ";font-weight:700;color:#151b26}.cmp td.rc{padding-bottom:16px}}
+</style></head><body><div class="rc-top" id="rcTop"><nav class="rc-nav" id="rcNav"><a class="rc-logo" href="../"><span class="rc-sq"><i style="background:#2c5fd6"></i><i style="background:#7f9fe6"></i><i style="background:#b8860b"></i><i style="background:#e88a84"></i><i style="background:#d23b33"></i></span>The Race Caller</a><div class="rc-links"><a href="../" data-k="home">Home</a><a href="../desk/" data-k="desk">Live Desk</a><a href="../desk/#calls" data-k="picks">Jon's Calls</a><a href="../how-it-works/" data-k="how" class=on aria-current=page>How It Works</a><a href="../about/" data-k="about">About</a><a href="../leadership/" data-k="leadership">Leadership</a></div><div style="display:flex;gap:14px;align-items:center"><a class="rc-btn" href="../desk/">Open the live desk</a><button class="rc-burger" aria-label="Menu" aria-expanded="false" onclick="var n=document.getElementById('rcNav');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))"><i></i><i></i><i></i></button></div><div class="rc-mmenu"><a href="../" data-k="home">Home</a><a href="../desk/" data-k="desk">Live Desk</a><a href="../desk/#calls" data-k="picks">Jon's Calls</a><a href="../how-it-works/" data-k="how" class=on aria-current=page>How It Works</a><a href="../about/" data-k="about">About</a><a href="../leadership/" data-k="leadership">Leadership</a></div></nav><div class="rc-stripe"></div><div class="rc-status" id="rcStatus" hidden></div></div><main><div class="how"><div class="k">How It Works</div><h1>Show your work.</h1>
+<p class="lede">The networks will tell you who won. The Race Caller is built to show you why, and to put my judgment on the record before a single vote is counted. Here's exactly how it works, where the numbers come from and how I'm keeping myself honest.</p>
+
+<section><h2>What's different</h2><p class="sub">Built to sit alongside the networks, not replace them.</p>
+<table class="cmp"><thead><tr><th></th><th>Typical election-night coverage</th><th class="rc">The Race Caller</th></tr></thead><tbody>
+<tr><td>On the record</td><td>Analysts talk through scenarios; projections come once a race is decided.</td><td class="rc">A winner picked in all 125 races, locked before each state's polls close and graded in public afterward.</td></tr>
+<tr><td>Context</td><td>The vote count, with commentary.</td><td class="rc">Three forecasters' ratings, polling averages, prediction-market odds, early vote and the county numbers each candidate needs, side by side for every race.</td></tr>
+<tr><td>Polling misses</td><td>Polls are treated as the baseline.</td><td class="rc">A poll-error dial that redraws the map if this year's polls miss the way they did in 2024, 2022 or 2025.</td></tr>
+<tr><td>What's left to count</td><td>Percent reporting.</td><td class="rc">Votes left, the share the trailing candidate needs, and which way each state's late count usually breaks.</td></tr>
+<tr><td>Accountability</td><td>Last night's analysis moves on to the next story.</td><td class="rc">A full post-game once the count is done: every hit and every miss, against the polls, the markets and the forecasters.</td></tr>
+</tbody></table></section>
+
+<section><h2>How I pick</h2><p class="sub">Every race gets a winner. No hedging, no "too close to call."</p>
+<div class="steps">
+<div class="card"><span class="n">1</span><h3>Start with the polls</h3><p>Each race starts at its polling average and the consensus of Cook Political Report, Inside Elections and Sabato's Crystal Ball.</p></div>
+<div class="card"><span class="n">2</span><h3>Go against them only for a reason</h3><p>I break from the polls when something specific points the other way: how a state's late votes usually break, county benchmarks, ratings moves, prediction markets or how polls missed there before. Those picks are flagged <b>vs polls</b>.</p></div>
+<div class="card"><span class="n">3</span><h3>Lock it before the polls close</h3><p>Each pick locks automatically when that state's polls close and can't be changed. Every version of the site is archived with a timestamp in a public GitHub record, so the picks are provably on the record before results come in.</p></div>
+</div></section>
+
+<section><h2>Election night</h2><p class="sub">Results, my calls and the math behind them.</p>
+<div class="two">
+<div class="card"><h3>Results</h3><p>Vote counts and calls come from Associated Press–sourced reporting by major news outlets and from official state results sites. The desk checks for new results about every 15 minutes, and the website refreshes every 7 to 8 minutes through election night, with a countdown at the top of every page.</p><p>A race shows as <b>called</b> only when the AP or a major decision desk projects it. Never on my say-so.</p></div>
+<div class="card"><h3>My calls</h3><p>Separately from the AP, I make my own calls as the votes come in. Each one is timestamped and compared with the AP's call, so you can see whether I was early, late, right or wrong.</p><p>The <b>Call Watch</b> flags races where the remaining vote can no longer realistically close the gap, adjusted for which way each state's late count usually breaks. It also flags races headed for an automatic recount or runoff.</p></div>
+</div></section>
+
+<section><h2>Why count order matters</h2>
+<div class="note">I got my start running absentee and early-vote programs in Michigan and Wisconsin, where elections are run at the municipal level and every clerk counts on their own schedule. The lesson stuck: <b>the margin on the screen matters less than which votes are still out.</b> Mail ballots, Election Day votes and big-city counts arrive at different times and lean different ways, and that's why an early lead can disappear by morning. The Race Caller tracks that for every state, so you know whether a lead is real.</div></section>
+
+<section><h2>Where the numbers come from</h2>
+<div class="src">
+<div><b>Results and calls</b>AP-sourced reporting from major news outlets, plus official state results sites.</div>
+<div><b>Race ratings</b>Cook Political Report, Inside Elections and Sabato's Crystal Ball. "Consensus" averages the three.</div>
+<div><b>Polling averages</b>RealClearPolling, 270toWin and Decision Desk HQ, as noted on each race.</div>
+<div><b>Prediction markets</b>Kalshi and Polymarket odds, shown for context. Not betting advice.</div>
+<div><b>Early vote</b>State election offices and the University of Florida Election Lab.</div>
+<div><b>Times</b>Shown in Arizona time (MT), with Eastern time where it matters. On Election Day, Eastern is two hours ahead.</div>
+</div></section>
+
+<section><h2>After the count</h2><p class="sub" style="margin-bottom:0">Once races are called, I'll publish a full post-game: how my picks held up against the polls, the markets and the forecasters, where the polls missed and why, and what actually moved the vote. Hits and misses, all of it.</p>
+<div class="cta-row"><a class="btn" href="../desk/">Open the live desk</a><a class="btn l" href="../desk/#calls">See my calls</a></div></section>
+
+<section><p class="sub" style="font-size:14px;margin:0">The Race Caller is an independent project by Jon Friedman. It is not affiliated with or endorsed by the Associated Press, any news organization, ratings service or prediction market. Official results come only from state and local election officials.</p></section>
+</div></main><footer class="rc-foot"><span class="rc-contact"><b>Media and contact:</b> <a href="mailto:friedmanjon730@gmail.com">friedmanjon730@gmail.com</a> · <a href="https://www.linkedin.com/in/jfriedman07/" target="_blank" rel="noopener">LinkedIn</a></span><span>© 2026 The Race Caller · Jon Friedman. All rights reserved. Independent analysis. Not affiliated with AP or any news organization.</span></footer><script>(function(){var n=document.getElementById("rcNav");if(!n)return;var b=n.querySelector(".rc-burger");function close(){n.classList.remove("open");if(b)b.setAttribute("aria-expanded","false")}n.querySelectorAll(".rc-mmenu a,.rc-links a").forEach(function(a){a.addEventListener("click",close)});document.addEventListener("click",function(e){if(!n.contains(e.target))close()});function mark(){if(!/\/desk\/?$/.test(location.pathname))return;var p=location.hash==="#calls";n.querySelectorAll("a[data-k]").forEach(function(a){var on=(a.dataset.k==="picks"&&p)||(a.dataset.k==="desk"&&!p);a.classList.toggle("on",on);if(on)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")})}mark();addEventListener("hashchange",mark)})();</script><script>(function(){var el=document.getElementById("rcStatus");if(!el)return;var last=null,flashT=0,flashAt=null;
+function utcFromMT(da,h,mi){return Date.UTC(2026,10,da,h+7,mi)}
+function slots(){var s=[],en=[5,12,20,27,35,42,50,57];
+ for(var h=7;h<24;h++){(h>=16?en:[50]).forEach(function(m){s.push(utcFromMT(3,h,m))})}
+ for(var h2=0;h2<24;h2++){(h2<=2?en:[50]).forEach(function(m){s.push(utcFromMT(4,h2,m))})}
+ [5,6,7,8].forEach(function(da){[0,1,2,3,4,5,6,7,9,15,21].forEach(function(h){s.push(utcFromMT(da,h,50))})});
+ return s.sort(function(a,b){return a-b}).map(function(t){return t+4*60e3})}
+var SL=slots();
+function fmt(t){return new Date(t).toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit",timeZone:"America/Phoenix"})}
+function fmtD(t){return new Date(t).toLocaleString("en-US",{weekday:"short",hour:"numeric",minute:"2-digit",timeZone:"America/Phoenix"})}
+async function poll(){try{var r=await fetch("/desk/snap.json?t="+Date.now(),{method:"HEAD",cache:"no-store"});var lm=r.headers.get("Last-Modified");if(lm){var t=Date.parse(lm);if(!isNaN(t)){if(last&&t>last+30e3){flashT=Date.now()+7000;flashAt=t;try{if(typeof loadSnapFile==="function")loadSnapFile()}catch(e){}}last=t}}}catch(e){}draw()}
+function draw(){var now=Date.now();var ELN0=Date.UTC(2026,10,3,23),ELN1=Date.UTC(2026,10,4,10);var liveN=now>=ELN0&&now<ELN1;var sm=innerWidth<560;
+ var nxt=null,prv=null;for(var i=0;i<SL.length;i++){if(SL[i]>now){nxt=SL[i];prv=i?SL[i-1]:null;break}}
+ var parts=[];
+ if(now<flashT&&flashAt){el.className="rc-status flash";el.innerHTML='<span class="dot"></span><b>New results'+(sm?'':' just in')+'</b><span class="sep">·</span>'+fmt(flashAt)+' MT<div class="rc-prog"><i style="width:100%"></i></div>';el.hidden=false;return}
+ if(liveN)parts.push('<span class="live-pill"><span class="dot"></span>LIVE</span>');else parts.push('<span class="dot"></span>');
+ var txt=[];
+ if(last)txt.push((sm?'Updated ':'Results updated ')+'<b>'+(now-last<20*3600e3?fmt(last):fmtD(last))+(sm?'':' MT')+'</b>');
+ var pct=0;
+ if(now<ELN0){txt.push(sm?'Live results at <b>4 PM MT</b> Tue':'Live results start when the first polls close at <b>4:00 PM MT</b> Tuesday')}
+ else if(nxt){var s=Math.max(0,Math.round((nxt-now)/1000)),m=Math.floor(s/60),ss=s%60;var cd=m+':'+(ss<10?'0':'')+ss;txt.push((sm?'Next ':'Next update about ')+'<b>'+fmt(nxt)+(sm?'':' MT')+'</b>'+(s<3600?' <span class="cd">'+(sm?cd:'in '+cd)+'</span>':''));if(prv)pct=Math.max(0,Math.min(100,(now-prv)/(nxt-prv)*100))}
+ else txt.push('Final results posted');
+ el.className="rc-status"+(liveN?" live":"");el.innerHTML=parts.join('')+txt.join('<span class="sep">·</span>')+(pct?'<div class="rc-prog"><i style="width:'+pct.toFixed(2)+'%"></i></div>':'');el.hidden=false}
+poll();setInterval(poll,60000);setInterval(draw,1000)})();</script><!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "557548d6d6324a85b51b45873c055c29"}'></script><!-- End Cloudflare Web Analytics --></body></html>
