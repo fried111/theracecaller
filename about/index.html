@@ -17,6 +17,22 @@ a{color:inherit}
 .rc-mmenu{display:none}
 .rc-links a,.rc-links a:visited,.rc-mmenu a,.rc-mmenu a:visited{color:#5d6879!important;-webkit-tap-highlight-color:transparent}.rc-links a:hover,.rc-links a.on{color:#151b26!important}.rc-mmenu a:visited,.rc-mmenu a{color:#33405a!important}
 .rc-top{position:sticky;top:0;z-index:60}
+.rc-status{background:#151b26;color:#dfe5ef;font:500 13px/1.3 Inter,system-ui,sans-serif;padding:7px clamp(16px,4vw,56px);display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;text-align:center}
+.rc-status[hidden]{display:none}
+.rc-status b{color:#fff;font-weight:700}
+.rc-status .dot{width:8px;height:8px;border-radius:50%;background:#8fa0bd;flex:none}
+.rc-status.live .dot{background:#3fbf6f;box-shadow:0 0 0 3px rgba(63,191,111,.25)}
+.rc-status .sep{opacity:.5}
+.rc-status{position:relative;transition:background-color .4s}
+.rc-status .cd{font-variant-numeric:tabular-nums;opacity:.85}
+.rc-prog{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(255,255,255,.08)}
+.rc-prog i{display:block;height:100%;background:#3fbf6f;transition:width 1s linear}
+.live-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(63,191,111,.16);color:#7fe0a3;font-weight:800;font-size:11px;letter-spacing:.12em;padding:3px 8px 3px 7px;border-radius:999px;margin-right:4px}
+.rc-status.live .live-pill .dot{animation:rcpulse 1.6s ease-out infinite}
+@keyframes rcpulse{0%{box-shadow:0 0 0 0 rgba(63,191,111,.6)}100%{box-shadow:0 0 0 8px rgba(63,191,111,0)}}
+.rc-status.flash{background:#1d7a45}
+.rc-status.flash .dot{background:#fff}
+@media (prefers-reduced-motion:reduce){.rc-status.live .live-pill .dot{animation:none}}
 .rc-stripe{height:8px;background:linear-gradient(90deg,#2c5fd6 0 20%,#7f9fe6 20% 40%,#b8860b 40% 60%,#e88a84 60% 80%,#d23b33 80%)}
 .k{font-weight:700;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:#5d6879}
 .rc-foot{background:#fff;padding:22px clamp(16px,4vw,56px);font-size:13px;color:#5d6879;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
@@ -45,7 +61,7 @@ a{color:inherit}
 @media(max-width:900px){.body{column-count:1}}
 @media(max-width:520px){.title .l2{display:block}.title .bar{display:block;width:96px;height:6px;margin-top:18px}}
 
-body{background:#0f1a2e}</style></head><body><div class="rc-top" id="rcTop"><nav class="rc-nav" id="rcNav"><a class="rc-logo" href="../"><span class="rc-sq"><i style="background:#2c5fd6"></i><i style="background:#7f9fe6"></i><i style="background:#b8860b"></i><i style="background:#e88a84"></i><i style="background:#d23b33"></i></span>The Race Caller</a><div class="rc-links"><a href="../" data-k="home">Home</a><a href="../desk/" data-k="desk">Live Desk</a><a href="../desk/#calls" data-k="picks">Picks</a><a href="../about/" data-k="about" class=on aria-current=page>About</a><a href="../leadership/" data-k="leadership">Leadership</a></div><div style="display:flex;gap:14px;align-items:center"><a class="rc-btn" href="../desk/">Open the live desk</a><button class="rc-burger" aria-label="Menu" aria-expanded="false" onclick="var n=document.getElementById('rcNav');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))"><i></i><i></i><i></i></button></div><div class="rc-mmenu"><a href="../" data-k="home">Home</a><a href="../desk/" data-k="desk">Live Desk</a><a href="../desk/#calls" data-k="picks">Picks</a><a href="../about/" data-k="about" class=on aria-current=page>About</a><a href="../leadership/" data-k="leadership">Leadership</a></div></nav><div class="rc-stripe"></div></div><main><div class="navy"><div class="k">About</div>
+body{background:#0f1a2e}</style></head><body><div class="rc-top" id="rcTop"><nav class="rc-nav" id="rcNav"><a class="rc-logo" href="../"><span class="rc-sq"><i style="background:#2c5fd6"></i><i style="background:#7f9fe6"></i><i style="background:#b8860b"></i><i style="background:#e88a84"></i><i style="background:#d23b33"></i></span>The Race Caller</a><div class="rc-links"><a href="../" data-k="home">Home</a><a href="../desk/" data-k="desk">Live Desk</a><a href="../desk/#calls" data-k="picks">Picks</a><a href="../about/" data-k="about" class=on aria-current=page>About</a><a href="../leadership/" data-k="leadership">Leadership</a></div><div style="display:flex;gap:14px;align-items:center"><a class="rc-btn" href="../desk/">Open the live desk</a><button class="rc-burger" aria-label="Menu" aria-expanded="false" onclick="var n=document.getElementById('rcNav');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))"><i></i><i></i><i></i></button></div><div class="rc-mmenu"><a href="../" data-k="home">Home</a><a href="../desk/" data-k="desk">Live Desk</a><a href="../desk/#calls" data-k="picks">Picks</a><a href="../about/" data-k="about" class=on aria-current=page>About</a><a href="../leadership/" data-k="leadership">Leadership</a></div></nav><div class="rc-stripe"></div><div class="rc-status" id="rcStatus" hidden></div></div><main><div class="navy"><div class="k">About</div>
 <h1 class="title">Note From A<span class="l2">Recovering Operative<span class="bar"></span></span></h1>
 <div class="body">
 <p>In 2016 the polls missed. In 2020 they missed again. In 2024 they underestimated Republicans in nearly every swing state. And in 2025 they missed the other way, by almost eight points in Virginia and New Jersey.</p>
@@ -56,4 +72,27 @@ body{background:#0f1a2e}</style></head><body><div class="rc-top" id="rcTop"><nav
 <div class="sign"><div class="sig"><span class="j">J</span><span class="o">o</span><span class="n">n</span></div>
 <div class="sigrow"><div><div class="nm">Jon Friedman</div><div class="ttl">Founder &amp; CEO, The Race Caller</div></div></div></div>
 </div></div>
-</main><footer class="rc-foot"><span>© 2026 The Race Caller · Jon Friedman. All rights reserved.</span><span>Independent analysis. Not affiliated with AP or any news organization.</span></footer><script>(function(){var n=document.getElementById("rcNav");if(!n)return;var b=n.querySelector(".rc-burger");function close(){n.classList.remove("open");if(b)b.setAttribute("aria-expanded","false")}n.querySelectorAll(".rc-mmenu a,.rc-links a").forEach(function(a){a.addEventListener("click",close)});document.addEventListener("click",function(e){if(!n.contains(e.target))close()});function mark(){if(!/\/desk\/?$/.test(location.pathname))return;var p=location.hash==="#calls";n.querySelectorAll("a[data-k]").forEach(function(a){var on=(a.dataset.k==="picks"&&p)||(a.dataset.k==="desk"&&!p);a.classList.toggle("on",on);if(on)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")})}mark();addEventListener("hashchange",mark)})();</script><!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "557548d6d6324a85b51b45873c055c29"}'></script><!-- End Cloudflare Web Analytics --></body></html>
+</main><footer class="rc-foot"><span>© 2026 The Race Caller · Jon Friedman. All rights reserved.</span><span>Independent analysis. Not affiliated with AP or any news organization.</span></footer><script>(function(){var n=document.getElementById("rcNav");if(!n)return;var b=n.querySelector(".rc-burger");function close(){n.classList.remove("open");if(b)b.setAttribute("aria-expanded","false")}n.querySelectorAll(".rc-mmenu a,.rc-links a").forEach(function(a){a.addEventListener("click",close)});document.addEventListener("click",function(e){if(!n.contains(e.target))close()});function mark(){if(!/\/desk\/?$/.test(location.pathname))return;var p=location.hash==="#calls";n.querySelectorAll("a[data-k]").forEach(function(a){var on=(a.dataset.k==="picks"&&p)||(a.dataset.k==="desk"&&!p);a.classList.toggle("on",on);if(on)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")})}mark();addEventListener("hashchange",mark)})();</script><script>(function(){var el=document.getElementById("rcStatus");if(!el)return;var last=null,flashT=0,flashAt=null;
+function utcFromMT(da,h,mi){return Date.UTC(2026,10,da,h+7,mi)}
+function slots(){var s=[],en=[5,12,20,27,35,42,50,57];
+ for(var h=7;h<24;h++){(h>=16?en:[50]).forEach(function(m){s.push(utcFromMT(3,h,m))})}
+ for(var h2=0;h2<24;h2++){(h2<=2?en:[50]).forEach(function(m){s.push(utcFromMT(4,h2,m))})}
+ [5,6,7,8].forEach(function(da){[0,1,2,3,4,5,6,7,9,15,21].forEach(function(h){s.push(utcFromMT(da,h,50))})});
+ return s.sort(function(a,b){return a-b}).map(function(t){return t+4*60e3})}
+var SL=slots();
+function fmt(t){return new Date(t).toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit",timeZone:"America/Phoenix"})}
+function fmtD(t){return new Date(t).toLocaleString("en-US",{weekday:"short",hour:"numeric",minute:"2-digit",timeZone:"America/Phoenix"})}
+async function poll(){try{var r=await fetch("/desk/snap.json?t="+Date.now(),{method:"HEAD",cache:"no-store"});var lm=r.headers.get("Last-Modified");if(lm){var t=Date.parse(lm);if(!isNaN(t)){if(last&&t>last+30e3){flashT=Date.now()+7000;flashAt=t;try{if(typeof loadSnapFile==="function")loadSnapFile()}catch(e){}}last=t}}}catch(e){}draw()}
+function draw(){var now=Date.now();var ELN0=Date.UTC(2026,10,3,23),ELN1=Date.UTC(2026,10,4,10);var liveN=now>=ELN0&&now<ELN1;var sm=innerWidth<560;
+ var nxt=null,prv=null;for(var i=0;i<SL.length;i++){if(SL[i]>now){nxt=SL[i];prv=i?SL[i-1]:null;break}}
+ var parts=[];
+ if(now<flashT&&flashAt){el.className="rc-status flash";el.innerHTML='<span class="dot"></span><b>New results'+(sm?'':' just in')+'</b><span class="sep">·</span>'+fmt(flashAt)+' MT<div class="rc-prog"><i style="width:100%"></i></div>';el.hidden=false;return}
+ if(liveN)parts.push('<span class="live-pill"><span class="dot"></span>LIVE</span>');else parts.push('<span class="dot"></span>');
+ var txt=[];
+ if(last)txt.push((sm?'Updated ':'Results updated ')+'<b>'+(now-last<20*3600e3?fmt(last):fmtD(last))+(sm?'':' MT')+'</b>');
+ var pct=0;
+ if(now<ELN0){txt.push(sm?'Live results from <b>4:00 PM MT</b> Tue':'Live results start when the first polls close at <b>4:00 PM MT</b> Tuesday')}
+ else if(nxt){var s=Math.max(0,Math.round((nxt-now)/1000)),m=Math.floor(s/60),ss=s%60;var cd=m+':'+(ss<10?'0':'')+ss;txt.push((sm?'Next ':'Next update about ')+'<b>'+fmt(nxt)+(sm?'':' MT')+'</b>'+(s<3600?' <span class="cd">'+(sm?cd:'in '+cd)+'</span>':''));if(prv)pct=Math.max(0,Math.min(100,(now-prv)/(nxt-prv)*100))}
+ else txt.push('Final results posted');
+ el.className="rc-status"+(liveN?" live":"");el.innerHTML=parts.join('')+txt.join('<span class="sep">·</span>')+(pct?'<div class="rc-prog"><i style="width:'+pct.toFixed(2)+'%"></i></div>':'');el.hidden=false}
+poll();setInterval(poll,60000);setInterval(draw,1000)})();</script><!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "557548d6d6324a85b51b45873c055c29"}'></script><!-- End Cloudflare Web Analytics --></body></html>
