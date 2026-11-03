@@ -15,6 +15,7 @@ a{color:inherit}
 .rc-burger{display:none;width:44px;height:44px;border:0;background:none;padding:9px;margin:-9px;cursor:pointer}
 .rc-burger i{display:block;height:2.5px;background:#151b26;margin:5px 0;border-radius:2px}
 .rc-mmenu{display:none}
+.rc-top{position:sticky;top:0;z-index:60}
 .rc-stripe{height:8px;background:linear-gradient(90deg,#2c5fd6 0 20%,#7f9fe6 20% 40%,#b8860b 40% 60%,#e88a84 60% 80%,#d23b33 80%)}
 .k{font-weight:700;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:#5d6879}
 .rc-foot{background:#fff;padding:22px clamp(16px,4vw,56px);font-size:13px;color:#5d6879;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
@@ -35,6 +36,7 @@ header .brand .yr{font-family:Inter,system-ui,sans-serif;font-weight:700;font-si
 header .tab{font-family:Inter,system-ui,sans-serif;text-transform:none;letter-spacing:0;font-weight:600;font-size:15px}
 header .tab[aria-selected="true"]{border-bottom-color:#2c5fd6}
 header .tab .ct{background:#eef2f8;color:#5d6879;border-radius:999px;padding:1px 7px;margin-left:6px;font-size:11px}
+header{top:var(--rcH,0px)!important}
 .snapbar{background:#eef2f8!important;color:#33405a!important;border-color:#dde2ea!important}
 </style>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -415,7 +417,7 @@ footer{padding-block:24px;color:var(--muted);font-size:12px;border-top:1px solid
 footer p{margin:4px 0;max-width:80ch}
 </style>
 
-<nav class="rc-nav" id="rcNav"><a class="rc-logo" href="../"><span class="rc-sq"><i style="background:#2c5fd6"></i><i style="background:#7f9fe6"></i><i style="background:#b8860b"></i><i style="background:#e88a84"></i><i style="background:#d23b33"></i></span>The Race Caller</a><div class="rc-links"><a href="../">Home</a><a href="../desk/" class=on aria-current=page>Live Desk</a><a href="../desk/#calls">Picks</a><a href="../about/">About</a><a href="../leadership/">Leadership</a></div><div style="display:flex;gap:14px;align-items:center"><a class="rc-btn" href="../desk/#calls">Jon's picks</a><button class="rc-burger" aria-label="Menu" aria-expanded="false" onclick="var n=document.getElementById('rcNav');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))"><i></i><i></i><i></i></button></div><div class="rc-mmenu"><a href="../">Home</a><a href="../desk/" class=on aria-current=page>Live Desk</a><a href="../desk/#calls">Picks</a><a href="../about/">About</a><a href="../leadership/">Leadership</a></div></nav><div class="rc-stripe"></div><header>
+<div class="rc-top" id="rcTop"><nav class="rc-nav" id="rcNav"><a class="rc-logo" href="../"><span class="rc-sq"><i style="background:#2c5fd6"></i><i style="background:#7f9fe6"></i><i style="background:#b8860b"></i><i style="background:#e88a84"></i><i style="background:#d23b33"></i></span>The Race Caller</a><div class="rc-links"><a href="../">Home</a><a href="../desk/" class=on aria-current=page>Live Desk</a><a href="../desk/#calls">Picks</a><a href="../about/">About</a><a href="../leadership/">Leadership</a></div><div style="display:flex;gap:14px;align-items:center"><a class="rc-btn" href="../desk/#calls">Jon's picks</a><button class="rc-burger" aria-label="Menu" aria-expanded="false" onclick="var n=document.getElementById('rcNav');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))"><i></i><i></i><i></i></button></div><div class="rc-mmenu"><a href="../">Home</a><a href="../desk/" class=on aria-current=page>Live Desk</a><a href="../desk/#calls">Picks</a><a href="../about/">About</a><a href="../leadership/">Leadership</a></div></nav><div class="rc-stripe"></div></div><header>
   <div class="wrap">
     <div class="hd">
       <div class="brand"><h1>Live Desk</h1><span class="yr">2026 Midterms</span></div>
@@ -1810,4 +1812,4 @@ function showSnapBar(){if(SNAP_MODE)return;SNAP_MODE=true;setSnapText();loadSnap
   DB.doc("meta/status").onSnapshot(s=>{META=s.exists?s.data():{};{const realNight=Date.now()>Date.UTC(2026,10,3,23);const n={};RAW_DOCS.forEach(d=>{const v=d.data();if(v&&v.demo&&(realNight||!META.demo))return;n[d.id]=v});LIVE=n;render(true)}renderStatus();syncRefreshBtn();if(UI.sel)refreshDrawer();if(UI.tab==="overview")render(true)},()=>{});
   if(UI.sel)refreshDrawer();})();
 </script>
-<footer class="rc-foot"><span>© 2026 The Race Caller · Jon Friedman. All rights reserved.</span><span>Independent analysis. Not affiliated with AP or any news organization.</span></footer>
+<footer class="rc-foot"><span>© 2026 The Race Caller · Jon Friedman. All rights reserved.</span><span>Independent analysis. Not affiliated with AP or any news organization.</span></footer><script>(function(){var t=document.getElementById("rcTop");if(!t)return;function f(){document.documentElement.style.setProperty("--rcH",t.offsetHeight+"px")}f();addEventListener("resize",f);if(window.ResizeObserver)new ResizeObserver(f).observe(t)})();</script>

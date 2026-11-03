@@ -15,6 +15,7 @@ a{color:inherit}
 .rc-burger{display:none;width:44px;height:44px;border:0;background:none;padding:9px;margin:-9px;cursor:pointer}
 .rc-burger i{display:block;height:2.5px;background:#151b26;margin:5px 0;border-radius:2px}
 .rc-mmenu{display:none}
+.rc-top{position:sticky;top:0;z-index:60}
 .rc-stripe{height:8px;background:linear-gradient(90deg,#2c5fd6 0 20%,#7f9fe6 20% 40%,#b8860b 40% 60%,#e88a84 60% 80%,#d23b33 80%)}
 .k{font-weight:700;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:#5d6879}
 .rc-foot{background:#fff;padding:22px clamp(16px,4vw,56px);font-size:13px;color:#5d6879;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
@@ -27,7 +28,7 @@ a{color:inherit}
  .rc-mmenu a:last-child{border-bottom:0}
 }
 @media(max-width:520px){.rc-nav .rc-btn{display:none}}
-@font-face{font-family:SigScript;src:url(../assets/sig.ttf)}.sig{position:relative;display:inline-block;font-family:SigScript;color:#fff;font-size:clamp(36px,3.4vw,44px);line-height:1;transform:rotate(-12deg) skewX(-4deg);transform-origin:left bottom;margin:4px 0 2px 10px;padding:22px 16px 6px 4px}.sig span{display:inline-block}.sig .j{transform:translateY(2px) rotate(-3deg) scale(1.08)}.sig .o{margin-left:2px;transform:translate(0,-1px) rotate(2deg)}.sig .n{margin-left:2px;transform:translate(0,-2px) rotate(-2deg) scaleX(1.06)}.sig svg{position:absolute;left:14px;bottom:2px;width:112px;height:18px;overflow:visible}
+@font-face{font-family:SigScript;src:url(../assets/sig.ttf)}.sig{position:relative;display:inline-block;font-family:SigScript;color:#fff;font-size:clamp(36px,3.4vw,44px);line-height:1;transform:rotate(-12deg) skewX(-4deg);transform-origin:left bottom;margin:4px 0 2px 10px;padding:8px 16px 4px 4px}.sig span{display:inline-block}.sig .j{transform:translateY(2px) rotate(-3deg) scale(1.08)}.sig .o{margin-left:2px;transform:translate(0,-1px) rotate(2deg)}.sig .n{margin-left:2px;transform:translate(0,-2px) rotate(-2deg) scaleX(1.06)}.sig svg{position:absolute;left:14px;bottom:2px;width:112px;height:18px;overflow:visible}
 .navy{color:#e8edf5;padding:clamp(70px,12vw,150px) clamp(20px,8vw,120px) clamp(60px,8vw,90px);max-width:1300px;margin:0 auto}
 .k{font-family:"Inter Display";font-weight:700;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:#8fa0bd}
 .title{font-family:Lora;font-style:italic;font-weight:500;font-size:clamp(44px,7vw,84px);line-height:1.05;margin:12px 0 clamp(36px,5vw,56px);color:#fff}
@@ -36,14 +37,14 @@ a{color:inherit}
 .body{column-count:2;column-gap:clamp(36px,5vw,64px)}
 .body p{font-family:Lora,Georgia,serif;font-size:clamp(17px,1.6vw,20px);line-height:1.65;margin:0 0 20px;color:#d7deea;break-inside:avoid;text-align:justify;hyphens:auto;-webkit-hyphens:auto}
 .body .close{color:#fff;font-weight:600}
-.sign{margin-top:16px;display:grid;gap:10px}
+.sign{margin-top:-14px;display:grid;gap:10px}
 .sigrow{display:flex;align-items:center;gap:16px}
 .av{width:64px;height:64px;border-radius:50%;flex:none;background:repeating-linear-gradient(45deg,#2a3956 0 8px,#33456a 8px 16px);display:grid;place-items:center;font-size:10px;color:#9fb0cc;font-weight:700;text-align:center;line-height:1.1}
 .nm{font-weight:700;color:#fff;font-size:16px}.ttl{color:#8fa0bd;font-size:14px}
 @media(max-width:900px){.body{column-count:1}}
 @media(max-width:520px){.title .bar{min-width:40px}}
 
-body{background:#0f1a2e}</style></head><body><nav class="rc-nav" id="rcNav"><a class="rc-logo" href="../"><span class="rc-sq"><i style="background:#2c5fd6"></i><i style="background:#7f9fe6"></i><i style="background:#b8860b"></i><i style="background:#e88a84"></i><i style="background:#d23b33"></i></span>The Race Caller</a><div class="rc-links"><a href="../">Home</a><a href="../desk/">Live Desk</a><a href="../desk/#calls">Picks</a><a href="../about/" class=on aria-current=page>About</a><a href="../leadership/">Leadership</a></div><div style="display:flex;gap:14px;align-items:center"><a class="rc-btn" href="../desk/">Open the live desk</a><button class="rc-burger" aria-label="Menu" aria-expanded="false" onclick="var n=document.getElementById('rcNav');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))"><i></i><i></i><i></i></button></div><div class="rc-mmenu"><a href="../">Home</a><a href="../desk/">Live Desk</a><a href="../desk/#calls">Picks</a><a href="../about/" class=on aria-current=page>About</a><a href="../leadership/">Leadership</a></div></nav><div class="rc-stripe"></div><main><div class="navy"><div class="k">About</div>
+body{background:#0f1a2e}</style></head><body><div class="rc-top" id="rcTop"><nav class="rc-nav" id="rcNav"><a class="rc-logo" href="../"><span class="rc-sq"><i style="background:#2c5fd6"></i><i style="background:#7f9fe6"></i><i style="background:#b8860b"></i><i style="background:#e88a84"></i><i style="background:#d23b33"></i></span>The Race Caller</a><div class="rc-links"><a href="../">Home</a><a href="../desk/">Live Desk</a><a href="../desk/#calls">Picks</a><a href="../about/" class=on aria-current=page>About</a><a href="../leadership/">Leadership</a></div><div style="display:flex;gap:14px;align-items:center"><a class="rc-btn" href="../desk/">Open the live desk</a><button class="rc-burger" aria-label="Menu" aria-expanded="false" onclick="var n=document.getElementById('rcNav');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))"><i></i><i></i><i></i></button></div><div class="rc-mmenu"><a href="../">Home</a><a href="../desk/">Live Desk</a><a href="../desk/#calls">Picks</a><a href="../about/" class=on aria-current=page>About</a><a href="../leadership/">Leadership</a></div></nav><div class="rc-stripe"></div></div><main><div class="navy"><div class="k">About</div>
 <h1 class="title">From the Mind of a<span class="l2">Strategist<span class="bar"></span></span></h1>
 <div class="body">
 <p>In 2016 the polls missed. In 2020 they missed again. In 2024 they underestimated Republicans in nearly every swing state. And in 2025 they missed the other way, by almost eight points in Virginia and New Jersey.</p>
