@@ -15,6 +15,7 @@ a{color:inherit}
 .rc-burger{display:none;width:44px;height:44px;border:0;background:none;padding:9px;margin:-9px;cursor:pointer}
 .rc-burger i{display:block;height:2.5px;background:#151b26;margin:5px 0;border-radius:2px}
 .rc-mmenu{display:none}
+.rc-links a,.rc-links a:visited,.rc-mmenu a,.rc-mmenu a:visited{color:#5d6879!important;-webkit-tap-highlight-color:transparent}.rc-links a:hover,.rc-links a.on{color:#151b26!important}.rc-mmenu a:visited,.rc-mmenu a{color:#33405a!important}
 .rc-top{position:sticky;top:0;z-index:60}
 .rc-stripe{height:8px;background:linear-gradient(90deg,#2c5fd6 0 20%,#7f9fe6 20% 40%,#b8860b 40% 60%,#e88a84 60% 80%,#d23b33 80%)}
 .k{font-weight:700;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:#5d6879}
@@ -24,7 +25,7 @@ a{color:inherit}
  .rc-mmenu{position:absolute;left:0;right:0;top:100%;background:#fff;border-top:1px solid #dde2ea;box-shadow:0 14px 30px rgba(21,27,38,.15);z-index:50;padding:8px clamp(16px,4vw,56px) 16px}
  .rc-nav.open .rc-mmenu{display:block}
  .rc-mmenu a{display:block;padding:13px 2px;font-weight:700;font-size:17px;text-decoration:none;border-bottom:1px solid #eef1f5;color:#33405a}
- .rc-mmenu a.on{color:#2c5fd6}
+ .rc-mmenu a.on{color:#151b26!important;box-shadow:inset 3px 0 0 #151b26;padding-left:14px}
  .rc-mmenu a:last-child{border-bottom:0}
 }
 @media(max-width:520px){.rc-nav .rc-btn{display:none}}
@@ -417,7 +418,7 @@ footer{padding-block:24px;color:var(--muted);font-size:12px;border-top:1px solid
 footer p{margin:4px 0;max-width:80ch}
 </style>
 
-<div class="rc-top" id="rcTop"><nav class="rc-nav" id="rcNav"><a class="rc-logo" href="../"><span class="rc-sq"><i style="background:#2c5fd6"></i><i style="background:#7f9fe6"></i><i style="background:#b8860b"></i><i style="background:#e88a84"></i><i style="background:#d23b33"></i></span>The Race Caller</a><div class="rc-links"><a href="../">Home</a><a href="../desk/" class=on aria-current=page>Live Desk</a><a href="../desk/#calls">Picks</a><a href="../about/">About</a><a href="../leadership/">Leadership</a></div><div style="display:flex;gap:14px;align-items:center"><a class="rc-btn" href="../desk/#calls">Jon's picks</a><button class="rc-burger" aria-label="Menu" aria-expanded="false" onclick="var n=document.getElementById('rcNav');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))"><i></i><i></i><i></i></button></div><div class="rc-mmenu"><a href="../">Home</a><a href="../desk/" class=on aria-current=page>Live Desk</a><a href="../desk/#calls">Picks</a><a href="../about/">About</a><a href="../leadership/">Leadership</a></div></nav><div class="rc-stripe"></div></div><header>
+<div class="rc-top" id="rcTop"><nav class="rc-nav" id="rcNav"><a class="rc-logo" href="../"><span class="rc-sq"><i style="background:#2c5fd6"></i><i style="background:#7f9fe6"></i><i style="background:#b8860b"></i><i style="background:#e88a84"></i><i style="background:#d23b33"></i></span>The Race Caller</a><div class="rc-links"><a href="../" data-k="home">Home</a><a href="../desk/" data-k="desk" class=on aria-current=page>Live Desk</a><a href="../desk/#calls" data-k="picks">Picks</a><a href="../about/" data-k="about">About</a><a href="../leadership/" data-k="leadership">Leadership</a></div><div style="display:flex;gap:14px;align-items:center"><a class="rc-btn" href="../desk/#calls">Jon's picks</a><button class="rc-burger" aria-label="Menu" aria-expanded="false" onclick="var n=document.getElementById('rcNav');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))"><i></i><i></i><i></i></button></div><div class="rc-mmenu"><a href="../" data-k="home">Home</a><a href="../desk/" data-k="desk" class=on aria-current=page>Live Desk</a><a href="../desk/#calls" data-k="picks">Picks</a><a href="../about/" data-k="about">About</a><a href="../leadership/" data-k="leadership">Leadership</a></div></nav><div class="rc-stripe"></div></div><header>
   <div class="wrap">
     <div class="hd">
       <div class="brand"><h1>Live Desk</h1><span class="yr">2026 Midterms</span></div>
@@ -1812,4 +1813,4 @@ function showSnapBar(){if(SNAP_MODE)return;SNAP_MODE=true;setSnapText();loadSnap
   DB.doc("meta/status").onSnapshot(s=>{META=s.exists?s.data():{};{const realNight=Date.now()>Date.UTC(2026,10,3,23);const n={};RAW_DOCS.forEach(d=>{const v=d.data();if(v&&v.demo&&(realNight||!META.demo))return;n[d.id]=v});LIVE=n;render(true)}renderStatus();syncRefreshBtn();if(UI.sel)refreshDrawer();if(UI.tab==="overview")render(true)},()=>{});
   if(UI.sel)refreshDrawer();})();
 </script>
-<footer class="rc-foot"><span>© 2026 The Race Caller · Jon Friedman. All rights reserved.</span><span>Independent analysis. Not affiliated with AP or any news organization.</span></footer><script>(function(){var t=document.getElementById("rcTop");if(!t)return;function f(){document.documentElement.style.setProperty("--rcH",t.offsetHeight+"px")}f();addEventListener("resize",f);if(window.ResizeObserver)new ResizeObserver(f).observe(t)})();</script>
+<footer class="rc-foot"><span>© 2026 The Race Caller · Jon Friedman. All rights reserved.</span><span>Independent analysis. Not affiliated with AP or any news organization.</span></footer><script>(function(){var n=document.getElementById("rcNav");if(!n)return;var b=n.querySelector(".rc-burger");function close(){n.classList.remove("open");if(b)b.setAttribute("aria-expanded","false")}n.querySelectorAll(".rc-mmenu a,.rc-links a").forEach(function(a){a.addEventListener("click",close)});document.addEventListener("click",function(e){if(!n.contains(e.target))close()});function mark(){if(!/\/desk\/?$/.test(location.pathname))return;var p=location.hash==="#calls";n.querySelectorAll("a[data-k]").forEach(function(a){var on=(a.dataset.k==="picks"&&p)||(a.dataset.k==="desk"&&!p);a.classList.toggle("on",on);if(on)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")})}mark();addEventListener("hashchange",mark)})();</script><script>(function(){var t=document.getElementById("rcTop");if(!t)return;function f(){document.documentElement.style.setProperty("--rcH",t.offsetHeight+"px")}f();addEventListener("resize",f);if(window.ResizeObserver)new ResizeObserver(f).observe(t)})();</script>
