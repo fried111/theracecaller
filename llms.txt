@@ -3,7 +3,7 @@
 > Jon Friedman's independent 2026 U.S. midterm election desk. Every Senate and governor race plus 54 key House seats on one screen, with forecaster ratings (Cook, Inside Elections, Sabato), polling averages, prediction-market odds, county benchmarks, and Jon's winner picks locked before polls close and graded after the count.
 
 - [Live Desk](https://theracecaller.com/desk/): live results, ratings, polls, markets and Jon's picks and calls (times in Arizona time)
-- [About](https://theracecaller.com/about/): From the Mind of a Strategist, why Jon built The Race Caller
+- [About](https://theracecaller.com/about/): Note From A Recovering Operative, why Jon built The Race Caller
 - [Leadership](https://theracecaller.com/leadership/): Jon Friedman, Founder & CEO; Julianne Cantelmi, President
 
 Founder: Jon Friedman, a recovering political operative who began in 2008 running absentee and early vote programs in Michigan and Wisconsin. Independent analysis; not affiliated with AP or any news organization.
