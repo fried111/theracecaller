@@ -86,7 +86,7 @@ footer .copy{display:none!important}
   --live:#e0a100; --ok:#2f8f5b; --pace-1:#d6ccef; --pace-2:#c2b6e3; --pace-3:#8a70c9; --pace-4:#5b3fa6; --ind-soft:#c9c3d6;
   --f-display:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
   --f-body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --f-mono:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
   --r:6px;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
@@ -342,6 +342,7 @@ select{border:1px solid var(--line);background:var(--panel);border-radius:var(--
 .vs{color:var(--muted);font-size:12px}
 .badge{display:inline-block;font-family:var(--f-display);font-weight:600;font-size:13px;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:3px;white-space:nowrap}
 .mini{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.mini,.vv small,.polls td.n,.pe-sg,.tab .ct,.chip b,.tile .n,.row .st small,.pe-flat b,.pe-t26 b,.pe-blend b,.usmap .lbl text.sub{font-variant-numeric:tabular-nums}
 .called{font-family:var(--f-display);font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:13px;padding:2px 7px;border-radius:3px;color:#fff}
 .flip{font-family:var(--f-display);font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--toss);border:1px solid var(--toss);border-radius:3px;padding:1px 5px}
 .empty{padding:24px;text-align:center;color:var(--muted)}
@@ -573,8 +574,8 @@ const PRIMARY_TABS=["overview","brief","calls","senate","house","gov","counties"
 function renderTabs(){const n={senate:RACES.filter(r=>r.office==="senate").length,gov:RACES.filter(r=>r.office==="gov").length,house:RACES.filter(r=>r.office==="house").length,leg:LEGS.length};
   const _T=TABS.filter(([k])=>PRIMARY_TABS.includes(k)||k===UI.tab);document.getElementById("tabs").innerHTML=_T.map(([k,l])=>`<button class="tab ${k==="demo"?"demo":""}" role="tab" aria-selected="${UI.tab===k}" data-tab="${k}">${l}${n[k]?`<span class="ct">${n[k]}</span>`:""}</button>`).join("")+`<button class="tab tab-more" data-moremenu>More ▾</button>`;requestAnimationFrame(scrollActiveTab)}
 function renderStatus(){if(inDemo()){const t=document.getElementById("statusText"),dot=document.getElementById("dot");dot.className="dot live";t.textContent="Demo · sample election-night results";return}const now=new Date();const firstClose=new Date(Date.UTC(2026,10,3,23));const t=document.getElementById("statusText"),dot=document.getElementById("dot");
-  const upd=META.lastUpdated?new Date(META.lastUpdated):null;
-  if(anyResults()){dot.className="dot live";t.textContent="Results live"+(upd?` · updated ${upd.toLocaleString([], {weekday:"short",hour:"numeric",minute:"2-digit"})}`:"")}
+  const upd=(()=>{let t=Date.parse(META.lastUpdated)||0;try{Object.values(LIVE).forEach(x=>{const u=x&&Date.parse(x.updatedAt);if(u>t)t=u})}catch(e){}return t?new Date(t):null})();
+  if(anyResults()){dot.className="dot live";t.textContent="Results live"+(upd?` · updated ${rcMT(upd)}`:"")}
   else if(now<firstClose){const days=daysToED(now);dot.className="dot";
     t.textContent=days>1?`Election Day in ${days} days · Tue Nov 3`:days===1?"Election Day is tomorrow · Tue Nov 3":`Election Day · first polls close ${fmtLocal(firstClose)} ${LOCAL_TZ} / ${fmtET(firstClose)}`}
   else{dot.className="dot live";t.textContent="Polls closing · waiting on first returns"}
@@ -1614,6 +1615,8 @@ function marginInfo(r,l){if(!l)return null;const vs=[["D",r.dem,l.dVotes,l.d],["
   if(vs.length<2)return null;vs.sort((a,b)=>((b[2]??-1)-(a[2]??-1))||((+b[3]||0)-(+a[3]||0)));const[a,b]=vs;
   const votes=a[2]!=null&&b[2]!=null?a[2]-b[2]:null;const pts=a[3]!=null&&b[3]!=null?(+a[3])-(+b[3]):null;const won=l.call===a[0];
   return{p:a[0],name:lastName(a[1])||a[0],votes,pts,won,text:`${esc(lastName(a[1])||a[0])} ${won?"wins by":"leads by"} ${votes!=null?fmtN(votes)+" votes":""}${votes!=null&&pts!=null?" · ":""}${pts!=null?pts.toFixed(1)+" pts":""}`}}
+function rcMT(t){try{return new Date(t).toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit",timeZone:"America/Phoenix"})+" MT"}catch(e){return""}}
+function leftLine(r,l){try{if(!l||l.call||!(+l.pctIn>=10)||+l.pctIn>=99)return"";const vl=votesLeft(r,l);if(!vl||!vl.left)return"";const n=vl.need;const c=CO()[r.state];const late=c&&c.lateShift&&c.lateShift!=="none"&&c.lateShift!=="mixed"?` · late count ${c.confidence==="low"?"may lean":"leans"} ${c.lateShift}`:"";return `<div class="note rc-left" style="margin:4px 0 0">About ${fmtN(vl.left)} votes left · ${esc(lastName(vl.name))} ${n==null?"trails":n>100?"can't close the gap at current turnout":`needs ${n.toFixed(1)}% of them`}${late}</div>`}catch(e){return""}}
 function marginLine(r,l){const m=marginInfo(r,l);return m?`<div class="margin" style="border-color:${pcol(m.p)}"><span style="color:${pcol(m.p)}">${m.text}</span>${l.totalVotes||(l.dVotes!=null&&l.rVotes!=null)?`<span class="mini num">${fmtN(l.totalVotes||((+l.dVotes||0)+(+l.rVotes||0)+(+l.oVotes||0)))} votes counted</span>`:""}</div>`:""}
 function voteCell(p,v,votes,hasRes){return hasRes?`<span class="vv num"><b style="color:${pcol(p)}">${v!=null?(+v).toFixed(1)+"%":"—"}</b>${votes!=null?`<small>${fmtN(votes)}</small>`:""}</span>`:""}
 function resultMini(r){const l=live(r.id);if(!l||!(l.pctIn>0||l.call))return"";const d=+l.d||0,R=+l.r||0,o=+l.o||0,t=d+R+o||1;
@@ -1626,8 +1629,12 @@ function rowHTML(r){const c=consOf(r),call=callOf(r),pa=pollAvg(r);
     (live(r.id)&&live(r.id).pctIn>0?`${badge(c)}${resultMini(r)}`:`${badge(c)}${pa&&pa.d!=null?`<span class="mini num">Polls ${marginTxt(pa.d,pa.r)}</span>`:""}`);
   return `<button class="row ${UI.sel===r.id?"sel":""} ${(inDemo()?DEMO_NEWS:NEWS)[r.id]?"isnew":""}" data-open="${r.id}"><div class="st">${esc(big)}<small>${tag}${r.seat==="special"?" SP":""}</small>${newsTag(r.id)}</div>
    <div class="who"><div class="cand"><span class="pd">${esc(lastName(r.dem)||"—")}</span><span class="vs">vs</span><span class="pr">${esc(lastName(r.rep)||"—")}</span>${oth}</div>
-   <div class="m"><span>${r.open?"Open seat":"Inc. "+esc(lastName(r.incumbent))}${r.incParty?` (${r.incParty})`:""}</span>${r.close?`<span>· Polls close ${closeTxt(r)}</span>`:""}${isFlipWatch(r)&&!call?'<span class="sig warn sm">Flip watch</span>':""}</div></div>
+   <div class="m"><span>${r.open?"Open seat":"Inc. "+esc(lastName(r.incumbent))}${r.incParty?` (${r.incParty})`:""}</span>${r.close?`<span>· Polls close ${closeTxt(r)}</span>`:""}${isFlipWatch(r)&&!call?'<span class="sig warn sm">Flip watch</span>':""}</div>${rowLive(r,call)}</div>
    <div class="r">${right}</div></button>`}
+function rcK(n){n=+n||0;return n>=1e6?(n/1e6).toFixed(1)+"M":n>=1e4?Math.round(n/1e3)+"K":fmtN(Math.round(n))}
+function rowLive(r,call){try{const l=live(r.id);if(!l||!(l.pctIn>0)||call||inDemo())return"";const vl=+l.pctIn>=10&&+l.pctIn<99?votesLeft(r,l):null;const p=[];
+  if(vl&&vl.left){const n=vl.need;p.push(`~${rcK(vl.left)} votes left · ${esc(lastName(vl.name))} ${n==null?"trails":n>100?"can't catch up at this turnout":`needs ${n.toFixed(1)}%`}`)}
+  if(l.updatedAt)p.push(`updated ${rcMT(l.updatedAt)}`);return p.length?`<div class="m rc-lv">${p.map((x,i)=>`<span>${i?"· ":""}${x}</span>`).join("")}</div>`:""}catch(e){return""}}
 function marginTxt(d,r){d=+d;r=+r;if(isNaN(d)||isNaN(r))return"";const m=d-r;if(Math.abs(m)<0.05)return"Tied";return (m>0?"D+":"R+")+Math.abs(m).toFixed(1)}
 
 /* ---------- U.S. map ---------- */
@@ -1699,8 +1706,8 @@ function stateCard(r){const c=consOf(r),call=callOf(r),pa=pollAvg(r),l=live(r.id
   return `<div class="scard"><div class="sch"><div><div class="k">${r.office==="senate"?"U.S. Senate"+(r.seat==="special"?" · special":""):r.office==="gov"?"Governor":esc(r.title.replace(NAMES[r.state]+" ",""))}</div>
     <div class="note">${r.open?"Open seat":"Incumbent "+esc(r.incumbent||"")}${r.incParty?` (${r.incParty})`:""}${r.close?` · polls close ${closeTxt(r)}`:""}</div></div>
     <div style="display:grid;justify-items:end;gap:4px">${call?`<span class="called" style="background:${pcol(call)}">${call==="D"?"Dem":call==="R"?"GOP":"Ind"} win</span>`:badge(c)}${isFlip(r)?'<span class="flip">Flip</span>':isFlipWatch(r)&&!call?'<span class="sig warn sm">Flip watch</span>':""}</div></div>
-   <div class="cands">${cands.filter(([,n])=>n).map(([p,n,v])=>`<div class="cline"><span class="nm ${pc(p)}">${esc(n)}</span>${hasRes?voteCell(p,v,p==="D"?l.dVotes:p==="R"?l.rVotes:l.oVotes,true):""}<span class="mini num">${hasRes?"":(pa&&p==="D"&&pa.d!=null&&!pa.indAsD?(+pa.d).toFixed(1):pa&&p==="R"&&pa.r!=null?(+pa.r).toFixed(1):pa&&p==="I"&&pa.indAsD?(+pa.d).toFixed(1):"")}</span>${hasRes?`<span class="b"><i style="width:${(+v||0)/tot*100}%;background:${pcol(p)}"></i></span>`:""}</div>`).join("")}${hasRes?marginLine(r,l):""}</div>
-   <div class="sfoot"><span class="note">${hasRes?`${Math.round(l.pctIn||0)}% reporting`:pa&&pa.d!=null?`Polling avg ${marginTxt(pa.d,pa.r)}${pa.source?` · ${esc(pa.source)}`:""}`:"No polling average"}</span><button class="lnk" data-open="${r.id}" data-from="${r.state}">Full detail →</button></div></div>`}
+   <div class="cands">${cands.filter(([,n])=>n).map(([p,n,v])=>`<div class="cline"><span class="nm ${pc(p)}">${esc(n)}</span>${hasRes?voteCell(p,v,p==="D"?l.dVotes:p==="R"?l.rVotes:l.oVotes,true):""}<span class="mini num">${hasRes?"":(pa&&p==="D"&&pa.d!=null&&!pa.indAsD?(+pa.d).toFixed(1):pa&&p==="R"&&pa.r!=null?(+pa.r).toFixed(1):pa&&p==="I"&&pa.indAsD?(+pa.d).toFixed(1):"")}</span>${hasRes?`<span class="b"><i style="width:${(+v||0)/tot*100}%;background:${pcol(p)}"></i></span>`:""}</div>`).join("")}${hasRes?marginLine(r,l)+leftLine(r,l):""}</div>
+   <div class="sfoot"><span class="note">${hasRes?`${Math.round(l.pctIn||0)}% reporting${l.updatedAt?` · updated ${rcMT(l.updatedAt)}`:""}`:pa&&pa.d!=null?`Polling avg ${marginTxt(pa.d,pa.r)}${pa.source?` · ${esc(pa.source)}`:""}`:"No polling average"}</span><button class="lnk" data-open="${r.id}" data-from="${r.state}">Full detail →</button></div></div>`}
 function stateHTML(st){const all=RACES.filter(r=>r.state===st&&r.office!=="leg");const f=UI.stOffice||"all";
   const groups=[["senate","Senate"],["gov","Governor"],["house","House"]].filter(([k])=>all.some(r=>r.office===k));
   const shown=f==="all"?groups:groups.filter(([k])=>k===f);
@@ -1767,7 +1774,7 @@ function drawerHTML(r){const l=live(r.id)||{};const rt=ratingsOf(r)||{};const c=
   return `<div class="dh"><div><div class="k">${r.office==="senate"?"U.S. Senate":r.office==="gov"?"Governor":r.office==="house"?"U.S. House":"State legislature"}${r.close?` · polls close ${closeTxt(r)}`:""}</div><h3>${esc(r.title)}</h3></div><button class="x" data-close aria-label="Close">✕</button></div>
    ${glanceHTML(r)}${hasRes?`<div class="dsec"><h5>Results ${call?`· <span class="called" style="background:${pcol(call)}">Called: ${esc(l.winner||call)}</span>`:`· ${Math.round(l.pctIn||0)}% reporting`}${isFlip(r)?' <span class="flip">Flip</span>':""}</h5>
       <div class="cands">${r.office==="leg"?`<div class="note num">${l.dSeats!=null?`Seats called: ${l.dSeats}D – ${l.rSeats}R`:""}</div>`:cands.map(([p,n,v])=>`<div class="cline"><span class="nm ${pc(p)}">${esc(n||"—")}</span>${voteCell(p,v,p==="D"?l.dVotes:p==="R"?l.rVotes:l.oVotes,true)}<span class="b"><i style="width:${(+v||0)/tot*100}%;background:${pcol(p)}"></i></span></div>`).join("")+marginLine(r,l)}</div>
-      <p class="note">${ut?`Updated ${ut.toLocaleString([], {weekday:"short",hour:"numeric",minute:"2-digit"})}`:""}${l.note?` · ${esc(l.note)}`:""}</p></div>`:""}
+      <p class="note">${ut?`Updated ${rcMT(ut)}`:""}${l.note?` · ${esc(l.note)}`:""}</p></div>`:""}
    ${analysisHTML(r,l)}
    ${r.office!=="leg"?`<div class="dsec"><h5>Candidates</h5><div class="cands">${cands.map(([p,n])=>`<div class="cline"><span class="nm ${pc(p)}">${esc(n||"—")}</span><span class="mini">${p==="D"?"Democrat":p==="R"?"Republican":"Other"}${n&&r.incumbent&&lastName(n)===lastName(r.incumbent)?" · incumbent":""}</span></div>`).join("")}</div>
       <p class="note">${r.open?`Open seat, held by ${esc(r.incumbent||"—")} (${r.incParty||"?"})`:`Incumbent: ${esc(r.incumbent||"—")} (${r.incParty||"?"})`}</p></div>`:
@@ -1779,7 +1786,7 @@ function drawerHTML(r){const l=live(r.id)||{};const rt=ratingsOf(r)||{};const c=
    ${marketSecHTML(r)}
    ${peDrawerHTML(r)}
    ${r.note||(r.office==="house"&&r.pvi)?`<div class="dsec"><h5>Context</h5><p class="note" style="margin:0">${r.pvi?`Cook PVI ${esc(r.pvi)}. `:""}${esc(r.note||"")}</p></div>`:""}
-   ${!l.updatedAt&&!anyResults()&&!inDemo()?`<p class="note" style="margin:4px 0 0">Results show here after polls close${r.close?` at ${closeTxt(r)}`:""}. <a href="https://news.google.com/search?q=${q}" target="_blank" rel="noopener">Latest news</a></p>`:`<div class="dsec"><h5>Live results</h5>${l.updatedAt?`<p class="note" style="margin:0 0 8px">Numbers above from ${esc(l.source||"AP-sourced reporting")} · ${new Date(l.updatedAt).toLocaleString([], {weekday:"short",hour:"numeric",minute:"2-digit"})}</p>`:`<p class="note" style="margin:0 0 8px">${anyResults()?"No returns reported for this race yet.":"Results appear here automatically after polls close. Updates run hourly on election night."}</p>`}
+   ${!l.updatedAt&&!anyResults()&&!inDemo()?`<p class="note" style="margin:4px 0 0">Results show here after polls close${r.close?` at ${closeTxt(r)}`:""}. <a href="https://news.google.com/search?q=${q}" target="_blank" rel="noopener">Latest news</a></p>`:`<div class="dsec"><h5>Live results</h5>${l.updatedAt?`<p class="note" style="margin:0 0 8px">Numbers above from ${esc(l.source||"AP-sourced reporting")} · ${rcMT(l.updatedAt)}</p>`:`<p class="note" style="margin:0 0 8px">${anyResults()?"No returns reported for this race yet.":"Results appear here automatically after polls close. Updates run every few minutes on election night."}</p>`}
      <div class="links">${IS_OWNER&&!inDemo()?`<button class="btn" data-refresh="${r.id}" ${refreshBusy()?"disabled":""}>${refreshBusy()?"Refresh running…":"Refresh this race now"}</button>`:""}<a href="https://news.google.com/search?q=${q}" target="_blank" rel="noopener" style="align-self:center">Latest news</a></div></div>`}
    ${myCallHTML(r)}
    ${IS_OWNER&&DB&&!inDemo()?editHTML(r,l):""}`}
@@ -1903,7 +1910,7 @@ function draw(){var now=Date.now();var ELN0=Date.UTC(2026,10,3,23),ELN1=Date.UTC
  if(last)txt.push((sm?'Updated ':'Results updated ')+'<b>'+(now-last<20*3600e3?fmt(last):fmtD(last))+(sm?'':' MT')+'</b>');
  var pct=0;
  if(now<ELN0){txt.push(sm?'Results at <b>4 PM MT / 6 PM ET</b>':'Live results start when the first polls close at <b>4:00 PM MT / 6:00 PM ET</b> Tuesday')}
- else if(nxt){var s=Math.max(0,Math.round((nxt-now)/1000)),m=Math.floor(s/60),ss=s%60;var cd=m+':'+(ss<10?'0':'')+ss;txt.push((sm?'Next ':'Next update about ')+'<b>'+fmt(nxt)+(sm?'':' MT')+'</b>'+(s<3600?' <span class="cd">'+(sm?cd:'in '+cd)+'</span>':''));if(prv)pct=Math.max(0,Math.min(100,(now-prv)/(nxt-prv)*100))}
+ else if(liveN){txt.push(sm?'Refreshing live':'New numbers every few minutes')}else if(nxt&&now<ELN0){var s=Math.max(0,Math.round((nxt-now)/1000)),m=Math.floor(s/60),ss=s%60;var cd=m+':'+(ss<10?'0':'')+ss;txt.push((sm?'Next ':'Next update about ')+'<b>'+fmt(nxt)+(sm?'':' MT')+'</b>'+(s<3600?' <span class="cd">'+(sm?cd:'in '+cd)+'</span>':''));if(prv)pct=Math.max(0,Math.min(100,(now-prv)/(nxt-prv)*100))}
  else txt.push('Final results posted');
  el.className="rc-status"+(liveN?" live":"");el.innerHTML=parts.join('')+txt.join('<span class="sep">·</span>')+(pct?'<div class="rc-prog"><i style="width:'+pct.toFixed(2)+'%"></i></div>':'');el.hidden=false}
 poll();setInterval(poll,60000);setInterval(draw,1000)})();</script><script>(function(){var t=document.getElementById("rcTop");if(!t)return;var h=document.querySelector("header");function f(){var r=document.documentElement.style;r.setProperty("--rcH",t.offsetHeight+"px");if(h)r.setProperty("--dkH",h.offsetHeight+"px")}f();addEventListener("resize",f);if(window.ResizeObserver){var o=new ResizeObserver(f);o.observe(t);if(h)o.observe(h)}})();</script><!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "557548d6d6324a85b51b45873c055c29"}'></script><!-- End Cloudflare Web Analytics -->
