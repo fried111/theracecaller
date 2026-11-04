@@ -832,7 +832,7 @@ function renderCounties(){const states=Object.keys(CTY());if(!states.length)retu
      <td class="num">${lm!=null?marginLbl(lm):"—"}${l?`<span class="mini">${Math.round(l.pctIn||0)}% in</span>`:""}</td><td class="num">${vs!=null?`<span class="${vs>=0?"pd":"pr"}">${vs>=0?"D":"R"} ahead of pace by ${Math.abs(vs).toFixed(1)}</span>`:"—"}</td></tr>`}).join("");
   return `<div class="view">
    <section class="panel pad"><div class="frow" style="margin-bottom:8px"><span class="fl">State</span>${core.map(s=>`<button class="fchip" aria-pressed="${s===st}" data-cst="${s}">${NAMES[s]}</button>`).join("")}</div>
-    ${more.length?`<div class="frow"><span class="fl">More</span>${more.map(s=>`<button class="fchip" aria-pressed="${s===st}" data-cst="${s}">${NAMES[s]}</button>`).join("")}</div>`:""}</section>
+    ${more.length?`<div class="frow"><span class="fl">More</span>${more.map(s=>`<button class="fchip" aria-pressed="${s===st}" data-cst="${s}">${NAMES[s]}</button>`).join("")}</div>`:""}<p class="mini" style="margin:8px 0 0">County maps cover these battleground states. Florida, Pennsylvania, Minnesota and Nebraska aren't mapped by county tonight; their statewide results are on the Senate and Governors tabs.</p></section>
    <div class="office"><section class="panel pad">
      <div class="maphead"><div><h2 class="sec" style="margin:0">${NAMES[st]} by county</h2><p class="note" style="margin:2px 0 0">${Object.keys(G.counties).length} counties · 2024: ${marginLbl(ms)} for president · dots mark bellwethers</p></div>
       <div class="mapctl">${races.length>1?`<div class="mode-sw">${races.map(r=>`<button aria-pressed="${r.id===rid}" data-crace="${r.id}">${r.office==="senate"?"Senate":"Governor"}</button>`).join("")}</div>`:""}
