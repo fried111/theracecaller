@@ -72,7 +72,7 @@ footer .copy{display:none!important}
 .status.amber,.status.red{background:none!important;padding:0!important}
 .snapbar{display:none!important}
 .snapbar{background:#eef2f8!important;color:#33405a!important;border-color:#dde2ea!important}
-</style>
+.rvp-g{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:10px}.rvp-g>div{display:flex;flex-direction:column;gap:3px}.rvp-g .k{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}.rvp-g b.num{font-size:30px;line-height:1.1}.rvp-bar{position:relative;display:flex;height:10px;border-radius:5px;overflow:hidden;margin-top:6px}.rvp-bar span{display:block;height:100%}.rvp-bar i{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--ink,#111);transform:translateX(-1px)}@media(max-width:640px){.rvp-g{grid-template-columns:1fr}}</style>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -1745,10 +1745,38 @@ function filterBar(office){const f=UI.filt[office]||{};const all=RACES.filter(r=
      ${f.st?`<button class="fchip" aria-pressed="true" data-clearst>${NAMES[f.st]} ✕</button>`:""}</div>
    <div class="frow"><input id="fq-${office}" class="search" type="search" placeholder="Search state, candidate…" value="${esc(f.q||"")}" data-fq>${hasFilters(f)?'<button class="fchip" data-reset>Clear filters</button>':""}</div></div>`}
 function hasFilters(f){return !!((f.b&&f.b.length)||f.open||f.flip||f.close||f.st||f.q)}
+
+/* ---------- result vs projection (per office tab) ---------- */
+function rvpHTML(office){try{if(!anyResults())return"";const sen=office==="senate",hs=office==="house";
+  const O=predOutlook()||{};const o=O[office];if(!o)return"";const P={d:o.d+(o.i||0),r:o.r};
+  const rs=RACES.filter(r=>r.office===office);let R,T,need,src;
+  if(hs){const ht=curMeta().houseTally;if(!ht||!(ht.d||ht.r))return"";R={d:ht.d,r:ht.r};T=435;need=218;src=ht.source||"AP"}
+  else{T=sen?100:50;need=sen?51:26;let d,r;
+    if(sen){const comp=(DATA&&DATA.senateComposition)||{d:47,r:53};d=Math.max(0,comp.d-rs.filter(x=>x.incParty==="D"||x.incParty==="I").length);r=Math.max(0,comp.r-rs.filter(x=>x.incParty==="R").length)}
+    else{d=Math.max(0,24-rs.filter(x=>x.incParty==="D").length);r=Math.max(0,26-rs.filter(x=>x.incParty==="R").length)}
+    rs.forEach(x=>{const c=callOf(x);if(!c)return;if(c==="R")r++;else d++});R={d,r};src="AP via CNN"}
+  const un=Math.max(0,T-R.d-R.r);const diff=R.d-P.d;
+  const open=rs.filter(x=>!callOf(x)).map(x=>{const l=live(x.id);const ld=leader(x);return{x,ld,l}});
+  const leadD=open.filter(q=>q.ld&&q.ld!=="R").length,leadR=open.filter(q=>q.ld==="R").length;
+  const graded=rs.map(x=>{const pk=PREDS[x.id],c=callOf(x);if(!pk||!c)return null;const pp=pk.p==="I"?"D":pk.p,cc=c==="I"?"D":c;return{x,pk:pk.p,c,ok:pp===cc}}).filter(Boolean);
+  const right=graded.filter(g=>g.ok).length,miss=graded.filter(g=>!g.ok);
+  const lbl=x=>hs?esc(x.label||x.id.replace("house-","")):esc(x.state)+(sen?" Sen":" Gov");
+  const bar=(v,cls)=>{const dp=v.d/T*100,rp=v.r/T*100;return `<div class="rvp-bar"><span style="width:${dp}%;background:var(--dem)"></span><span style="width:${Math.max(0,100-dp-rp)}%;background:var(--soft)"></span><span style="width:${rp}%;background:var(--rep)"></span><i style="left:${need/T*100}%"></i></div>`};
+  const ctl=v=>office==="gov"?(v.d>=26?"Democrats hold most governorships":v.r>=26?"Republicans hold most governorships":"an even split"):sen&&v.d===50&&v.r===50?"50–50 · Republican control (VP breaks ties)":v.d>=need?"Democratic control":v.r>=(sen?50:need)?"Republican control":"no majority yet";
+  return `<section class="panel pad rvp"><div class="maphead"><h2 class="sec" style="margin:0">Result vs. projection</h2><span class="note">Projection = ${IS_OWNER?"your":"Jon's"} pre-election picks${hs?" (all 435 seats)":""} · Result = ${hs?`AP seat count (${esc(src.replace(/^AP via /,""))})`:"races called by AP"}</span></div>
+   <div class="rvp-g">
+    <div><span class="k">Projected</span><b class="num">${P.d}–${P.r}</b><span class="note">${ctl(P)}</span>${bar(P)}</div>
+    <div><span class="k">Result now</span><b class="num ${R.d>=need?"pd":R.r>=need?"pr":""}">${R.d}–${R.r}</b><span class="note">${ctl(R)}${un?` · ${un} uncalled`:""}${!hs&&un?` (Dems lead ${leadD}, GOP ${leadR})`:""}</span>${bar(R)}</div>
+    <div><span class="k">Difference</span><b class="num ${diff>0?"pd":diff<0?"pr":""}">${diff>0?"+":""}${diff}</b><span class="note">${diff===0?"Democrats right on the projection":`Democrats ${Math.abs(diff)} seat${Math.abs(diff)===1?"":"s"} ${diff>0?"above":"below"} the projection`}${un?", before the uncalled races":""}</span></div>
+   </div>
+   ${graded.length?`<p class="br-h" style="margin:12px 0 6px">Race picks: <b>${right} of ${graded.length}</b> right (${Math.round(right/graded.length*100)}%)${hs?" in the seats we tracked":""}${miss.length?". Missed:":"."}</p>
+   ${miss.length?`<div class="pe-fl">${miss.map(g=>`<button class="pe-chip" data-open="${g.x.id}"><b>${lbl(g.x)}</b> picked <b class="${g.pk==="R"?"pr":"pd"}">${g.pk}</b> → won <b class="${g.c==="R"?"pr":"pd"}">${g.c}</b></button>`).join("")}</div>`:""}`:""}
+   ${open.length?`<p class="mini" style="margin:8px 0 0">Still uncalled${hs?" in our tracked seats":""}: ${open.map(q=>`<a href="#${q.x.id}" data-open="${q.x.id}">${lbl(q.x)}</a>${q.ld?` (${q.ld} leads)`:""}`).join(", ")}</p>`:""}
+  </section>`}catch(e){return""}}
 function renderOffice(office){const list=filtered(office);const vis=new Set(list.map(r=>r.id));
   const mode=UI.mapMode[office]||(anyResults()?"results":"ratings");
   const titles={senate:"Senate races",gov:"Governor races",house:"Competitive House seats"};
-  return `${office==="house"?`<div class="view" style="margin-bottom:16px">${houseProjHTML(false)}${peDialHTML("house")}${earlyWarnHTML()}</div>`:`<div class="view" style="margin-bottom:16px">${office==="senate"||office==="gov"?sgProjHTML(office):""}${liveMissHTML()}${peDialHTML(office)}</div>`}<div class="office omap"><section class="panel pad">
+  return `${office==="house"?`<div class="view" style="margin-bottom:16px">${rvpHTML("house")}${houseProjHTML(false)}${peDialHTML("house")}${earlyWarnHTML()}</div>`:`<div class="view" style="margin-bottom:16px">${rvpHTML(office)}${office==="senate"||office==="gov"?sgProjHTML(office):""}${liveMissHTML()}${peDialHTML(office)}</div>`}<div class="office omap"><section class="panel pad">
      <div class="maphead"><h2 class="sec" style="margin:0">${titles[office]}</h2>${mapControls(office,false)}</div>
      ${mapHTML(office,vis)}${mapLegend(office)}
      <p class="note" style="margin:10px 0 0">Click any state to see its races and candidates. Faded states are filtered out.</p></section>
